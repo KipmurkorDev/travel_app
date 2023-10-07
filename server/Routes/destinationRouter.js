@@ -14,17 +14,19 @@ const destinationRouter = express.Router();
 
 // Public routes
 destinationRouter.get("/", getAllDestinations);
+destinationRouter.get("/wishlist/", authMiddleware, getWishLists);
+destinationRouter.get(
+  "/bookmarked-attractions",
+  authMiddleware,
+  getBookmarkedAttractions
+);
 destinationRouter.get("/:id", getDestination);
 destinationRouter.post("/", addDestination);
-destinationRouter.get("/wishlist/", getAllDestinations);
+
 // Routes protected by authMiddleware
 destinationRouter.use(authMiddleware);
 destinationRouter.patch("/wishlist/:destinationId", addToWishlist);
 destinationRouter.delete("/wishlist/:id", deleteWishList);
 destinationRouter.patch("/bookmark/:destinationId/:attractionId", addBookMark);
-destinationRouter.get(
-  "/bookmarked-attractions/:userId",
-  getBookmarkedAttractions
-);
 
 module.exports = destinationRouter;

@@ -14,7 +14,6 @@ function verifyToken(token) {
 const authMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
-    console.log("Hello");
 
     if (!authorization)
       return res.status(401).json({ error: "Missing authorization header" });
@@ -29,7 +28,6 @@ const authMiddleware = async (req, res, next) => {
 
     // Store the decoded token's data in res.locals for future use
     res.locals.author = decodedToken.author;
-    console.log(res.locals.author);
     next();
   } catch (ex) {
     console.error("Authentication error:", ex);

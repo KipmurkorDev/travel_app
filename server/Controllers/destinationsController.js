@@ -2,13 +2,10 @@ const { Destination, Attraction } = require("../Model/destinationModel"); // Imp
 // Controller function to get all destinations
 const getAllDestinations = async (req, res) => {
   try {
-    // const destinations = await Destination.find(
-    //   {},
-    //   { name: 1, description: 1, image: 1 }
-    // );
-    const userId = res.locals.author;
-
-    const destinations = await Destination.find({ wishlist: userId });
+    const destinations = await Destination.find(
+      {},
+      { name: 1, description: 1, image: 1 }
+    );
 
     return res.status(200).json(destinations);
   } catch (error) {
@@ -120,7 +117,6 @@ const addToWishlist = async (req, res) => {
 const getWishLists = async (req, res) => {
   try {
     const userId = res.locals.author;
-
     // Find all destinations where the user's ID appears in the wishlist
     const destinations = await Destination.find({ wishlist: userId });
 
@@ -145,8 +141,8 @@ const deleteWishList = async (req, res) => {
 
     // Find the destination by ID in the database
     const destination = await Destination.findOne({
-      "wishlist.authorId": userId,
       _id: destinationId,
+      wishlist: userId,
     });
 
     if (!destination) {
@@ -157,7 +153,7 @@ const deleteWishList = async (req, res) => {
 
     // Remove the user's ID from the wishlist
     destination.wishlist = destination.wishlist.filter(
-      (item) => !item.authorId.equals(userId)
+      (item) => !item.equals(userId)
     );
     await destination.save();
 
@@ -173,7 +169,7 @@ const deleteWishList = async (req, res) => {
 const addBookMark = async (req, res) => {
   try {
     const { destinationId, attractionId } = req.params;
-    const userId = req.body.userId;
+    const userId = res.locals.author;
 
     // Find the destination by ID
     const destination = await Destination.findById(destinationId);
@@ -188,7 +184,7 @@ const addBookMark = async (req, res) => {
     if (!attraction) {
       return res.status(404).json({ error: "Attraction not found" });
     }
-
+    console.log(attraction, userId);
     // Check if the user has already bookmarked this attraction
     const isAlreadyBookmarked = attraction.bookmarkedBy.includes(userId);
 
@@ -204,7 +200,7 @@ const addBookMark = async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: "Attraction bookmarked successfully" });
+      .json({ message: "Attraction bookmarked successfully", attraction });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -214,7 +210,7 @@ const addBookMark = async (req, res) => {
 const getBookmarkedAttractions = async (req, res) => {
   try {
     const userId = res.locals.author;
-
+    console.log("helllo...", userId);
     // Find attractions where the user has bookmarked attractions
     const bookmarkedAttractions = await Attraction.find({
       bookmarkedBy: userId,
