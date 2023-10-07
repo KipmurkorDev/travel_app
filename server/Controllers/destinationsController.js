@@ -2,13 +2,17 @@ const { Destination, Attraction } = require("../Model/destinationModel"); // Imp
 // Controller function to get all destinations
 const getAllDestinations = async (req, res) => {
   try {
-    const destinations = await Destination.find(
-      {},
-      { name: 1, description: 1, image: 1 }
-    );
-    res.status(200).json(destinations);
+    // const destinations = await Destination.find(
+    //   {},
+    //   { name: 1, description: 1, image: 1 }
+    // );
+    const userId = res.locals.author;
+
+    const destinations = await Destination.find({ wishlist: userId });
+
+    return res.status(200).json(destinations);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 const addDestination = async (req, res) => {
@@ -54,9 +58,9 @@ const addDestination = async (req, res) => {
     // Save the new destination to the database
     const savedDestination = await newDestination.save();
 
-    res.status(201).json(savedDestination);
+    return res.status(201).json(savedDestination);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -74,9 +78,9 @@ const getDestination = async (req, res) => {
       return res.status(404).json({ error: "Destination not found" });
     }
 
-    res.status(200).json(destination); // Respond with the destination and populated attractions as JSON
+    return res.status(200).json(destination); // Respond with the destination and populated attractions as JSON
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -85,7 +89,6 @@ const addToWishlist = async (req, res) => {
   try {
     const { destinationId } = req.params;
     const userId = res.locals.author;
-
     // Check if the destination and user exist
     const destination = await Destination.findById(destinationId);
     if (!destination) {
@@ -104,25 +107,22 @@ const addToWishlist = async (req, res) => {
     destination.wishlist.push(userId);
     await destination.save();
 
-    res
+    return res
       .status(200)
       .json({ message: "Destination added to wishlist successfully." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 // Controller function to get a user's wishlist of destinations
-const getWishList = async (req, res) => {
+const getWishLists = async (req, res) => {
   try {
-    console.log("userId:");
     const userId = res.locals.author;
 
     // Find all destinations where the user's ID appears in the wishlist
-    const destinations = await Destination.find({
-      wishlist: userId,
-    });
+    const destinations = await Destination.find({ wishlist: userId });
 
     if (destinations.length === 0) {
       return res
@@ -130,10 +130,10 @@ const getWishList = async (req, res) => {
         .json({ error: "No destinations found in wishlist" });
     }
 
-    res.status(200).json(destinations);
+    return res.status(200).json(destinations);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json("Internal Server Error");
   }
 };
 
@@ -161,9 +161,11 @@ const deleteWishList = async (req, res) => {
     );
     await destination.save();
 
-    res.status(200).json({ message: "Destination removed from wishlist" });
+    return res
+      .status(200)
+      .json({ message: "Destination removed from wishlist" });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -200,9 +202,11 @@ const addBookMark = async (req, res) => {
     attraction.bookmarkedBy.push(userId);
     await attraction.save();
 
-    res.status(201).json({ message: "Attraction bookmarked successfully" });
+    return res
+      .status(201)
+      .json({ message: "Attraction bookmarked successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -216,9 +220,9 @@ const getBookmarkedAttractions = async (req, res) => {
       bookmarkedBy: userId,
     });
 
-    res.status(200).json(bookmarkedAttractions);
+    return res.status(200).json(bookmarkedAttractions);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -226,7 +230,7 @@ module.exports = {
   getAllDestinations,
   addDestination,
   getDestination,
-  getWishList,
+  getWishLists,
   addBookMark,
   deleteWishList,
   getBookmarkedAttractions,
