@@ -53,8 +53,7 @@ const userLogin = async (req, res) => {
       if (confirmpassword) {
         const token = jwt.sign(
           { fullName: user.fullName, email: user.email, author: user._id },
-          process.env.JWT_KEY,
-          { expiresIn: "24h" }
+          process.env.JWT_KEY
         );
         res
           .status(200)

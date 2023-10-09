@@ -9,7 +9,7 @@ const router = require("./Routes/index");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 mongoose
   .connect(process.env.DB_URL, {
     useNewUrlParser: true,

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const attractionSchema = new mongoose.Schema({
   name: String,
   description: String,
+  image: String,
   bookmarkedBy: [
     {
       type: mongoose.Schema.Types.ObjectId,

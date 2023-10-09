@@ -8,6 +8,7 @@ const {
   addToWishlist,
   deleteWishList,
   getBookmarkedAttractions,
+  removeBookMark,
   addBookMark,
 } = require("../Controllers/destinationsController");
 const destinationRouter = express.Router();
@@ -28,5 +29,6 @@ destinationRouter.use(authMiddleware);
 destinationRouter.patch("/wishlist/:destinationId", addToWishlist);
 destinationRouter.delete("/wishlist/:id", deleteWishList);
 destinationRouter.patch("/bookmark/:destinationId/:attractionId", addBookMark);
+destinationRouter.delete("/bookmark/:attractionId", removeBookMark);
 
 module.exports = destinationRouter;

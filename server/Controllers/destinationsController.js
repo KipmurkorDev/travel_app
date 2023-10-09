@@ -29,12 +29,13 @@ const addDestination = async (req, res) => {
 
     // Iterate through the attractions data and create attraction objects
     for (const attractionData of attractions) {
-      const { name, description } = attractionData;
+      const { name, description, image } = attractionData;
 
       // Create a new attraction using the Attraction model
       const newAttraction = new Attraction({
         name,
         description,
+        image,
       });
 
       // Save the new attraction to the database
@@ -184,7 +185,6 @@ const addBookMark = async (req, res) => {
     if (!attraction) {
       return res.status(404).json({ error: "Attraction not found" });
     }
-    console.log(attraction, userId);
     // Check if the user has already bookmarked this attraction
     const isAlreadyBookmarked = attraction.bookmarkedBy.includes(userId);
 
@@ -197,7 +197,7 @@ const addBookMark = async (req, res) => {
     // Add the user's ID to the attraction's bookmarkedBy array
     attraction.bookmarkedBy.push(userId);
     await attraction.save();
-
+    console.log("helllo...", userId);
     return res
       .status(201)
       .json({ message: "Attraction bookmarked successfully", attraction });
@@ -210,13 +210,45 @@ const addBookMark = async (req, res) => {
 const getBookmarkedAttractions = async (req, res) => {
   try {
     const userId = res.locals.author;
-    console.log("helllo...", userId);
     // Find attractions where the user has bookmarked attractions
     const bookmarkedAttractions = await Attraction.find({
       bookmarkedBy: userId,
     });
 
     return res.status(200).json(bookmarkedAttractions);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const removeBookMark = async (req, res) => {
+  try {
+    const { attractionId } = req.params;
+    const userId = res.locals.author;
+
+    // Find the attraction by ID
+    const attraction = await Attraction.findById(attractionId);
+
+    if (!attraction) {
+      return res.status(404).json({ error: "Attraction not found" });
+    }
+
+    // Check if the user has already bookmarked this attraction
+    const isAlreadyBookmarked = attraction.bookmarkedBy.includes(userId);
+
+    if (!isAlreadyBookmarked) {
+      return res
+        .status(400)
+        .json({ error: "Attraction is not bookmarked by the user" });
+    }
+
+    // Remove the user's ID from the attraction's bookmarkedBy array
+    const index = attraction.bookmarkedBy.indexOf(userId);
+    attraction.bookmarkedBy.splice(index, 1);
+    await attraction.save();
+
+    return res
+      .status(200)
+      .json({ message: "Attraction bookmark removed successfully" });
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -231,4 +263,5 @@ module.exports = {
   deleteWishList,
   getBookmarkedAttractions,
   addToWishlist,
+  removeBookMark,
 };

@@ -13,16 +13,16 @@ function verifyToken(token) {
 
 const authMiddleware = async (req, res, next) => {
   try {
-    const { authorization } = req.headers;
+    // const { authorization } = req.headers||;
 
-    if (!authorization)
-      return res.status(401).json({ error: "Missing authorization header" });
+    // if (!authorization)
+    //   return res.status(401).json({ error: "Missing authorization header" });
 
-    const [bearer, token] = authorization.split(" ");
+    // const [bearer, token] = authorization.split(" ");
 
-    if (bearer !== "Bearer")
-      return res.status(401).json({ error: "Malformed authorization" });
-
+    // if (bearer !== "Bearer")
+    //   return res.status(401).json({ error: "Malformed authorization" });
+    const token = process.env.TOKEN;
     const decodedToken = verifyToken(token);
     if (!decodedToken) return res.status(401).json({ error: "Invalid token" });
 
