@@ -43,7 +43,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Future<List<Attraction>> fetchBookmarkedAttractions() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://10.0.2.2:8080/destinations/bookmarked-attractions'));
+          'http://16.171.145.184/destinations/bookmarked-attractions'));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonData = json.decode(response.body);
@@ -74,7 +74,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Future<void> removeFromBookmarks(String attractionId) async {
     try {
       final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8080/destinations/bookmark/$attractionId'),
+        Uri.parse('http://16.171.145.184/destinations/bookmark/$attractionId'),
       );
       if (response.statusCode == 200) {
         // Reload bookmarks data after a successful deletion

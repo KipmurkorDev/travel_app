@@ -76,7 +76,7 @@ class _DestinationDetailState extends State<DestinationDetail> {
   Future<void> fetchDestinationDetails() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.0.2.2:8080/destinations/${widget.destinationId}'),
+        Uri.parse('http://16.171.145.184/destinations/${widget.destinationId}'),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
@@ -101,7 +101,7 @@ class _DestinationDetailState extends State<DestinationDetail> {
   Future<void> addToWishlist(String destinationId) async {
     try {
       final response = await http.patch(
-        Uri.parse('http://10.0.2.2:8080/destinations/wishlist/$destinationId'),
+        Uri.parse('http://16.171.145.184/destinations/wishlist/$destinationId'),
       );
       if (response.statusCode == 200) {
         print('Added to Wishlist');
@@ -117,7 +117,7 @@ class _DestinationDetailState extends State<DestinationDetail> {
     try {
       final response = await http.patch(
         Uri.parse(
-            'http://10.0.2.2:8080/destinations/bookmark/$destinationId/$attractionId/'),
+            'http://16.171.145.184/destinations/bookmark/$destinationId/$attractionId/'),
       );
       if (response.statusCode == 200) {
         print('Added to Bookmarks');

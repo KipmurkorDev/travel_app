@@ -43,7 +43,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   Future<List<Destination>> fetchWishlistData() async {
     try {
       final response = await http
-          .get(Uri.parse('http://10.0.2.2:8080/destinations/wishlist'));
+          .get(Uri.parse('http://16.171.145.184/destinations/wishlist'));
       print(response.body);
 
       if (response.statusCode == 200) {
@@ -71,7 +71,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   Future<void> removeFromWishlist(String destinationId) async {
     try {
       final response = await http.delete(
-        Uri.parse('http://10.0.2.2:8080/destinations/wishlist/$destinationId'),
+        Uri.parse('http://16.171.145.184/destinations/wishlist/$destinationId'),
       );
       if (response.statusCode == 200) {
         setState(() {

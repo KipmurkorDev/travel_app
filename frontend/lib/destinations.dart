@@ -129,7 +129,7 @@ class DestinationsList extends StatelessWidget {
 
   Future<List<Destination>> fetchDestinations() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8080/destinations/'));
+        await http.get(Uri.parse('http://16.171.145.184/destinations/'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
