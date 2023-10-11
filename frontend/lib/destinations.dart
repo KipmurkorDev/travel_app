@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'destination_detail.dart'; // Import the DestinationDetail page
+import 'destination_detail.dart';
 
 class Destination {
   final String destinationId;
@@ -39,82 +39,72 @@ class DestinationCard extends StatefulWidget {
 }
 
 class _DestinationCardState extends State<DestinationCard> {
-  bool isHovered = false;
-
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          isHovered = true;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          isHovered = false;
-        });
-      },
-      child: GestureDetector(
-        onTap: () {
-          // Navigate to the DestinationDetail page with destinationId
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DestinationDetail(
-                destinationId: widget.destination.destinationId,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DestinationDetail(
+              destinationId: widget.destination.destinationId,
             ),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 5.0), // Add padding to the top
-          child: SizedBox(
-            height:
-                isHovered ? 550 : 500, // Adjust the size based on hover state
-            child: Card(
-              elevation: isHovered
-                  ? 4.0
-                  : 2.0, // Adjust elevation based on hover state
-              child: Padding(
-                padding:
-                    const EdgeInsets.all(8.0), // Padding for the Card's content
-                child: Column(
-                  children: [
-                    if (widget.destination.imageUrl.isNotEmpty)
-                      Image.network(
-                        widget.destination.imageUrl,
-                        width: double.infinity,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      )
-                    else
-                      const SizedBox(
-                        width: 30,
-                        height: 40,
-                        child: Icon(Icons.image_not_supported),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.destination.name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.destination.description,
-                        style: const TextStyle(
-                          fontSize: 8,
-                        ),
-                      ),
-                    ),
-                  ],
+          ),
+        );
+      },
+      child: Center(
+        child: Card(
+          elevation: 2.0,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/greencity.webp', // Default local image
+                  width: double.infinity,
+                  height: 60,
+                  fit: BoxFit.cover,
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.destination.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    widget.destination.description,
+                    style: const TextStyle(
+                      fontSize: 8,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DestinationDetail(
+                          destinationId: widget.destination.destinationId,
+                        ),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    minimumSize: const Size(5, 20),
+                  ),
+                  child: const Text(
+                    'More Details',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -161,7 +151,7 @@ class DestinationsList extends StatelessWidget {
           }
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // Display three items per row
+              crossAxisCount: 2,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
             ),

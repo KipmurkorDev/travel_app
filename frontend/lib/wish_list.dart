@@ -122,10 +122,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     child: Card(
                       child: Column(
                         children: <Widget>[
-                          Image.network(
-                            destination.image,
-                            height: 100,
+                          Image.asset(
+                            'assets/images/greencity.webp', // Default local image
                             width: double.infinity,
+                            height: 90,
                             fit: BoxFit.cover,
                           ),
                           Text(

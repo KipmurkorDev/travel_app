@@ -128,10 +128,10 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                         return Card(
                           child: Column(
                             children: <Widget>[
-                              Image.network(
-                                attraction.image,
-                                height: 100, // Adjust the height as needed
+                              Image.asset(
+                                'assets/images/newyork.jpg',
                                 width: double.infinity,
+                                height: 80,
                                 fit: BoxFit.cover,
                               ),
                               Text(attraction.name),

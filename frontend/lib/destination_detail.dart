@@ -15,7 +15,7 @@ class Attraction {
   final String id;
   final String name;
   final String description;
-  final String image; // Add image URL attribute
+  final String image; // Add image asset name attribute
 
   Attraction({
     required this.id,
@@ -29,8 +29,7 @@ class Attraction {
       id: json['_id'],
       name: json['name'] ?? '',
       description: json['description'] ?? '',
-      image:
-          json['image'] ?? '', // Replace 'image' with the actual attribute name
+      image: json['image'] ?? '', // Replace with asset name
     );
   }
 }
@@ -130,17 +129,6 @@ class _DestinationDetailState extends State<DestinationDetail> {
   }
 
   // Placeholder function for loading images, replace with actual image loading logic
-  Widget _loadImage(String imageUrl) {
-    return imageUrl.isNotEmpty
-        ? Image.network(
-            imageUrl,
-            width: 100, // Adjust width and height as needed.
-            height: 90,
-            fit: BoxFit.cover,
-          )
-        : const SizedBox
-            .shrink(); // If no image URL is provided, return an empty SizedBox.
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +199,12 @@ class _DestinationDetailState extends State<DestinationDetail> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        _loadImage(attraction.image),
+                                        Image.asset(
+                                          'assets/images/newyork.jpg',
+                                          width: double.infinity,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                        ),
                                         Text(
                                           attraction.name,
                                           style: const TextStyle(
